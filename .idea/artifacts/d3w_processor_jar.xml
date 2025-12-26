@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="d3w-processor:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/d3w_processor_jar</output-path>
+    <root id="archive" name="d3w-processor.jar">
+      <element id="module-output" name="d3w-processor" />
+    </root>
+  </artifact>
+</component>
