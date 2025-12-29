@@ -87,24 +87,25 @@ java -jar d3w-processor.jar <雛型.d3wファイル> <設定.ymlファイル1> [
 ## YAMLファイルの形式
 
 ```yaml
-workName: "月次請求書発行"
-memoText: "毎月末に実行する請求書発行処理"
-subject: "2025年1月分請求書"
+workName: "ワーク生成_テスト岡谷_1"
+memoText: "ワーク自動生成テスト_1"
+subject: "ワークテスト件名_1"
 documentName: "[文書名]"
-templateName: "invoice_template_v2"
-
-textDatasetFields:
-  - company_name
-  - invoice_date
-  - due_date
-  - total_amount
+templateName: "[テンプレート名]"
 
 datasourceFields:
-  - Id
-  - Name
-  - Amount__c
-  - Status__c
-  - Account.Name
+  - "テンプレート名"
+  - "文書名"
+  - "あいうえお"
+  - "かきくけこ"
+  - "さしすせそ"
+  - "たちつてと"
+
+textDatasetFields:
+  - "あいうえお"
+  - "かきくけこ"
+  - "さしすせそ"
+  - "たちつてと"
 ```
 
 ### フィールド説明
@@ -116,20 +117,22 @@ datasourceFields:
 | `subject` | String | 件名 |
 | `documentName` | String | ドキュメント名 |
 | `templateName` | String | 帳票テンプレート名 |
-| `textDatasetFields` | List<String> | テキストデータセットフィールドのリスト |
 | `datasourceFields` | List<String> | データソースフィールドのリスト |
+| `textDatasetFields` | List<String> | テキストデータセットフィールドのリスト |
+
 
 ### フィールドの適用先
 
-| YAMLフィールド | JSON内の反映先 | 例 |
-|--------------|--------------|-----|
-| `workName` | `name` | "月次請求書発行" |
-| `memoText` | `note` | "毎月末に実行" |
-| `subject` | `content.subject` | "2025年1月分請求書" |
-| `documentName` | `content.document.name` | "[文書名]" |
-| `templateName` | `content.document.template.name` | "invoice_template_v2" |
-| `textDatasetFields` | `content.document.template.params[0].values` | ["[company_name]", "[invoice_date]"] |
-| `datasourceFields` | `content.datasource.fields` | ["Id", "Name", "Amount__c"] |
+| YAMLフィールド | JSON内の反映先 | 例                                  |
+|--------------|--------------|------------------------------------|
+| `workName` | `name` | "ワーク生成_テスト岡谷_1"                    |
+| `memoText` | `note` | "ワーク自動生成テスト_1"                     |
+| `subject` | `content.subject` | "ワークテスト件名_1"                       |
+| `documentName` | `content.document.name` | "[文書名]"                            |
+| `templateName` | `content.document.template.name` | "[テンプレート名]"                        |
+| `datasourceFields` | `content.datasource.fields` | ["あいうえお", "かきくけこ", "さしすせそ", "たちつてと"]      |
+| `textDatasetFields` | `content.document.template.params[0].values` | ["あいうえお", "かきくけこ", "さしすせそ", "たちつてと"] |
+
 
 ## D3Wファイルの構造
 
@@ -157,29 +160,29 @@ datasourceFields:
     {
       "content_class": "net.opro.product.d3w.work.csv.CsvWork",
       "key": "",
-      "name": "月次請求書発行",
+      "name": "ワーク生成_テスト岡谷_1",
       "path": "w1"
     },
     {
       "content_class": "net.opro.product.d3w.work.csv.CsvWork",
       "key": "",
-      "name": "残高証明書生成",
+      "name": "ワーク生成_テスト岡谷_2",
       "path": "w2"
     }
   ],
   "envelopes": [
     {
-      "key": "env_key_456",
-      "name": "マイエンベロープ",
-      "content_class": "...",
+      "key": "GZvMjSTR6I_GgG",
+      "name": "ワーク実行 - ファイル_Box配送_防衛省",
+      "content_class": "net.opro.product.d3w.envelope.StandardEnvelope",
       "path": "e1"
     }
   ],
   "services": [
     {
-      "key": "svc_key_789",
-      "name": "マイサービス",
-      "content_class": "...",
+      "key": "GZvMBw6GGI_GcC",
+      "name": "Salesforce Files [文書化]_添付ファイル取得(複数)",
+      "content_class": "net.opro.product.d3w.service.salesforce.files.SFFilesDocumentService",
       "path": "s1"
     }
   ]
@@ -287,7 +290,7 @@ java -jar d3w-processor.jar template.d3w single_config.yaml
    - `+` → `From Maven...`
    - `com.google.code.gson:gson:2.8.9` を検索して追加
 3. `Build` → `Build Artifacts...` → `Build`
-4. `out/artifacts/d3w-processor/d3w-processor.jar` が生成される
+4. `build/d3w-processor.jar` が生成される
 
 ## プロジェクト構造
 
@@ -296,6 +299,7 @@ d3w-processor/
 ├── src/
 │   ├── d3w/
 │   │   ├── Main.java                 # メインエントリーポイント
+│   │   ├── Launcher.java             # UI  
 │   │   ├── D3wProcessor.java         # メイン処理ロジック
 │   │   ├── D3wExtractor.java         # ZIP解凍
 │   │   ├── JsonEditor.java           # JSON編集（JsonObjectベース）
@@ -319,7 +323,12 @@ d3w-processor/
 
 ```
 ┌─────────────┐
-│   Main.java │ ← エントリーポイント
+│Launcher.java│
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Main.java │
 └──────┬──────┘
        │
        ▼
@@ -500,24 +509,12 @@ A: はい、コマンドライン引数として複数のYAMLファイルを指�
 ### Q: 出力ファイルの名前は変更できますか？
 A: 現在は`output_yyyyMMddHHmmss.d3w`形式で自動生成されます。タイムスタンプが含まれるため、ファイル名の衝突は発生しません。
 
-## ライセンス
-
-（適切なライセンスを記載してください）
-
-## 作者
-
-（作者情報を記載してください）
-
 ## バージョン履歴
 
-### v2.0.0 (2025-12-29)
+### v1.0.0 (2025/12/29)
+- 初回リリース
+- 基本的なD3Wファイル処理機能
 - JsonObjectベースの実装に全面移行
 - D3wContentクラスを削除し、柔軟なJSON操作を実現
 - envelopes、servicesの完全保持機能を追加
-- エラーハンドリングの改善（printStackTrace()の削除）
-- try-with-resourcesの適切な使用でリソースリーク防止
-- 未チェックキャスト警告の適切な処理
-
-### v1.0.0
-- 初回リリース
-- 基本的なD3Wファイル処理機能
+- UI実装
