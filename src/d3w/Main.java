@@ -1,6 +1,7 @@
 package d3w;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,15 +67,22 @@ public class Main {
      * @return 生成された.d3wファイルのパス
      */
     private static String processFiles(String d3wFilePath, List<String> ymlFilePaths) throws Exception {
+        // 雛型.d3wファイルの絶対パスを取得
+        Path d3wPath = Paths.get(d3wFilePath).toAbsolutePath();
+        
         // 出力先ディレクトリを決定（雛型.d3wと同じディレクトリ）
-        String outputDir = Paths.get(d3wFilePath).getParent().toString();
+        Path outputDir = d3wPath.getParent();
+        if (outputDir == null) {
+            // パスが取得できない場合はカレントディレクトリを使用
+            outputDir = Paths.get(".").toAbsolutePath();
+        }
         
         // タイムスタンプを生成
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         
         // 出力ファイル名を生成
         String outputFileName = "output_" + timestamp + ".d3w";
-        String outputPath = Paths.get(outputDir, outputFileName).toString();
+        String outputPath = outputDir.resolve(outputFileName).toString();
         
         // D3wProcessorで処理を実行
         D3wProcessor.process(d3wFilePath, ymlFilePaths, outputPath);

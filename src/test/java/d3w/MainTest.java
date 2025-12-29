@@ -1,5 +1,6 @@
 package d3w;
 
+import lombok.var;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +23,7 @@ public class MainTest {
     /**
      * リソースファイルを一時ディレクトリにコピーする
      *
-     * @param resourcePath クラスパス上のリソースパス（例: "/templates/防衛省サンプルワーク.d3w"）
+     * @param resourcePath クラスパス上のリソースパス（例: "/templates/Box配送_防衛省_ワーク実行-20251229184004.d3w"）
      * @param tempDir      一時ディレクトリ
      * @param fileName     コピー先のファイル名
      * @return コピーされたファイル
@@ -40,17 +42,25 @@ public class MainTest {
     @Test
     public void testNomalGenerate(@TempDir Path tempDir) throws Exception {
         // リソースから一時ディレクトリにコピー
-        File d3wFile = copyResourceToTemp("/templates/防衛省サンプルワーク.d3w", tempDir, "防衛省サンプルワーク.d3w");
+        File d3wFile = copyResourceToTemp("/templates/Box配送_防衛省_ワーク実行-20251229184004.d3w", tempDir, "Box配送_防衛省_ワーク実行-20251229184004.d3w");
         File yml1 = copyResourceToTemp("/configs/01_TEST_YAML.yaml", tempDir, "01_TEST_YAML.yaml");
         File yml2 = copyResourceToTemp("/configs/02_TEST_YAML.yaml", tempDir, "02_TEST_YAML.yaml");
         File yml3 = copyResourceToTemp("/configs/03_TEST_YAML.yaml", tempDir, "03_TEST_YAML.yaml");
         File yml4 = copyResourceToTemp("/configs/04_TEST_YAML.yaml", tempDir, "04_TEST_YAML.yaml");
         File yml5 = copyResourceToTemp("/configs/05_TEST_YAML.yaml", tempDir, "05_TEST_YAML.yaml");
+        
+        // 出力先をtest-outputディレクトリに設定
+        // 注: Main.main()は内部で出力先を決定するため、
+        // d3wファイルをtest-outputディレクトリにコピーする
+        Path testOutputDir = Paths.get("test-output");
+        Files.createDirectories(testOutputDir);
+        Path d3wInOutput = testOutputDir.resolve(d3wFile.getName());
+        Files.copy(d3wFile.toPath(), d3wInOutput, StandardCopyOption.REPLACE_EXISTING);
 
-        // テスト実行
+        // テスト実行（test-output内のd3wファイルを指定）
         Main.main(
             new String[] {
-                    d3wFile.getAbsolutePath(),
+                    d3wInOutput.toString(),
                     yml1.getAbsolutePath(),
                     yml2.getAbsolutePath(),
                     yml3.getAbsolutePath(),
@@ -58,6 +68,14 @@ public class MainTest {
                     yml5.getAbsolutePath(),
             }
         );
+        
+        // 出力ファイルが生成されていることを確認
+        // output_*.d3w ファイルがtest-outputディレクトリに存在するはず
+        try (var stream = Files.list(testOutputDir)) {
+            assertTrue(stream.anyMatch(p -> p.getFileName().toString().startsWith("output_") 
+                            && p.getFileName().toString().endsWith(".d3w")),
+                    "output_*.d3wファイルがtest-outputディレクトリに生成されていること");
+        }
     }
 
     @Test

@@ -4,6 +4,9 @@ out/
 !**/src/test/**/out/
 .kotlin
 
+### Test Output ###
+test-output/
+
 ### Eclipse ###
 .apt_generated
 .classpath
