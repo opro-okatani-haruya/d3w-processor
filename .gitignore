@@ -33,3 +33,4 @@ bin/
 .DS_Store
 /build/production/
 /build/test/
+/src/test/resources/templates/output_*.d3w
