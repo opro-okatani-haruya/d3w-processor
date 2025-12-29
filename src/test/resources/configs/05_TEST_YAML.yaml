@@ -1,0 +1,21 @@
+workName: "ワーク生成_テスト岡谷_5"
+memoText: "ワーク自動生成テスト_5"
+subject: "ワークテスト件名_5"
+documentName: "[文書名]"
+templateName: "[テンプレート名]"
+
+textDatasetFields:
+  - "あとは"
+  - "なに"
+  - "こうりょ"
+  - "すれば"
+  - "ええやろなぁ"
+
+datasourceFields:
+  - "テンプレート名"
+  - "文書名"
+  - "あとは"
+  - "なに"
+  - "こうりょ"
+  - "すれば"
+  - "ええやろなぁ"
