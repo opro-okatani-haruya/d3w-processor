@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,8 +17,8 @@ class YamlInfoLoaderTest {
     @Test
     void testLoadFromYaml() throws Exception {
         // テストリソースのパスを取得
-        String resourcePath = getClass().getClassLoader()
-                .getResource("configs/01_TEST_YAML.yaml")
+        String resourcePath = Objects.requireNonNull(getClass().getClassLoader()
+                        .getResource("configs/01_TEST_YAML.yaml"))
                 .getPath();
 
         // YAMLファイルから読み込み

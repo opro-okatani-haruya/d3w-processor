@@ -165,6 +165,19 @@ public class Main {
         System.err.println("║           エラー発生 - 処理を中断しました                    ║");
         System.err.println("╚════════════════════════════════════════════════════════╝");
         System.err.println("\nエラー詳細:");
-        e.printStackTrace();
+        System.err.println("エラータイプ: " + e.getClass().getSimpleName());
+        System.err.println("メッセージ: " + e.getMessage());
+        
+        // スタックトレースを表示
+        System.err.println("\nスタックトレース:");
+        for (StackTraceElement element : e.getStackTrace()) {
+            System.err.println("  at " + element);
+        }
+        
+        // 原因があれば表示
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            System.err.println("\n原因: " + cause.getClass().getSimpleName() + ": " + cause.getMessage());
+        }
     }
 }

@@ -39,6 +39,7 @@ public class YamlInfoLoader {
      * @param map YAMLから読み込んだMap
      * @return YamlInfoオブジェクト
      */
+    @SuppressWarnings("unchecked")
     private static YamlInfo mapToYamlInfo(Map<String, Object> map) {
         return new YamlInfo(
                 (String) map.get("workName"),

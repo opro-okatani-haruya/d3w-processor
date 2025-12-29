@@ -1,6 +1,7 @@
 package d3w;
 
 import lombok.Data;
+import lombok.var;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,9 +43,8 @@ public class TempDirectory implements AutoCloseable {
             return;
         }
 
-        try {
-            Files.walk(directory)
-                    .sorted(Comparator.reverseOrder()) // 深い階層から削除
+        try (var stream = Files.walk(directory)) {
+            stream.sorted(Comparator.reverseOrder()) // 深い階層から削除
                     .forEach(path -> {
                         try {
                             Files.delete(path);
