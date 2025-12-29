@@ -56,7 +56,7 @@ public class JsonEditor {
      * @param jsonObject 編集対象のJsonObject
      * @param yamlInfo   適用するYamlInfo
      */
-    public static void applyYamlInfo(JsonObject jsonObject, YamlInfo yamlInfo) {
+    public static JsonObject applyYamlInfo(JsonObject jsonObject, YamlInfo yamlInfo) {
         // ワーク名を設定
         if (yamlInfo.getWorkName() != null) {
             jsonObject.addProperty("name", yamlInfo.getWorkName());
@@ -148,6 +148,8 @@ public class JsonEditor {
             newParams.add(param);
             template.add("params", newParams);
         }
+
+        return jsonObject;
     }
 
     /**
