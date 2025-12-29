@@ -23,7 +23,7 @@ public class MainTest {
     /**
      * リソースファイルを一時ディレクトリにコピーする
      *
-     * @param resourcePath クラスパス上のリソースパス（例: "/templates/Box配送_防衛省_ワーク実行-20251229184004.d3w"）
+     * @param resourcePath クラスパス上のリソースパス（例: "/templates/Box20251229184004.d3w"）
      * @param tempDir      一時ディレクトリ
      * @param fileName     コピー先のファイル名
      * @return コピーされたファイル
@@ -42,7 +42,7 @@ public class MainTest {
     @Test
     public void testNomalGenerate(@TempDir Path tempDir) throws Exception {
         // リソースから一時ディレクトリにコピー
-        File d3wFile = copyResourceToTemp("/templates/Box配送_防衛省_ワーク実行-20251229184004.d3w", tempDir, "Box配送_防衛省_ワーク実行-20251229184004.d3w");
+        File d3wFile = copyResourceToTemp("/templates/Box20251229184004.d3w", tempDir, "Box20251229184004.d3w");
         File yml1 = copyResourceToTemp("/configs/01_TEST_YAML.yaml", tempDir, "01_TEST_YAML.yaml");
         File yml2 = copyResourceToTemp("/configs/02_TEST_YAML.yaml", tempDir, "02_TEST_YAML.yaml");
         File yml3 = copyResourceToTemp("/configs/03_TEST_YAML.yaml", tempDir, "03_TEST_YAML.yaml");
