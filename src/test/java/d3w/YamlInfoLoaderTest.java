@@ -103,7 +103,7 @@ class YamlInfoLoaderTest {
     }
 
     @Test
-    void testLoadAllFromDirectory_EmptyDirectory(@TempDir Path tempDir) throws Exception {
+    void testLoadAllFromDirectory_EmptyDirectory(@TempDir Path tempDir) {
         List<YamlInfo> allWorks = YamlInfoLoader.loadAllFromDirectory(tempDir.toString());
 
         assertNotNull(allWorks);
